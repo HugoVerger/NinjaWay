@@ -1,0 +1,8 @@
+#E finish
+#I 127.0.0.1
+#P 26000
+#V 60
+finish
+left
+right
+jump
