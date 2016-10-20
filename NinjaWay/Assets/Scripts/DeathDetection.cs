@@ -14,6 +14,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 deathText.SetActive(true);
                 fpc.moveCommand = "";
                 fpc.isDead = true;
+				PlayerPrefs.SetInt ("highestScore", (int)transform.position.x);
             }
         }
     }

@@ -11,7 +11,10 @@ public class ScoreManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         if (player == null)
-            player = GameObject.FindWithTag("Player");        
+            player = GameObject.FindWithTag("Player");
+		
+		int previousHighestScore = PlayerPrefs.GetInt ("highestScore");
+		highestScore.text = "Highest Score: " + previousHighestScore;
     }
 	
 	// Update is called once per frame
