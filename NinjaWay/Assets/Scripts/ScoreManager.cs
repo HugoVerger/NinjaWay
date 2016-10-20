@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour {
         if (player == null)
             player = GameObject.FindWithTag("Player");
 		
-		int previousHighestScore = PlayerPrefs.GetInt ("highestScore");
+		int previousHighestScore = PlayerPrefs.GetInt("highestScore");
 		highestScore.text = "Highest Score: " + previousHighestScore;
     }
 	

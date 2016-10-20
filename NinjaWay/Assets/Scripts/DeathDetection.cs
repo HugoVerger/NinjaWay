@@ -7,6 +7,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public FirstPersonController fpc;
         public GameObject deathText;
+		public AudioClip deathSound;
+		private AudioSource audioSource;
 
         void OnControllerColliderHit(ControllerColliderHit hit) {
             if (hit.gameObject.tag.Equals("KillZone"))
@@ -14,7 +16,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 deathText.SetActive(true);
                 fpc.moveCommand = "";
                 fpc.isDead = true;
-				PlayerPrefs.SetInt ("highestScore", (int)transform.position.x);
+				PlayerPrefs.SetInt("highestScore", (int)transform.position.x);
+				audioSource = GetComponent<AudioSource>();
+				audioSource.clip = deathSound;
+				audioSource.Play ();
             }
         }
     }

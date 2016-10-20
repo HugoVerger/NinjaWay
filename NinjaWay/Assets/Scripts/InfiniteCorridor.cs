@@ -64,6 +64,7 @@ public class InfiniteCorridor : MonoBehaviour {
             Vector3 pos = new Vector3(50 * i, 0, 0);
             activePrefabs[i] = (GameObject)Instantiate(getPrefab(), pos, Quaternion.identity);
         }
+		nbPrefabDestroyed = 1;
     }
 
     private Object getPrefab()
