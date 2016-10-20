@@ -6,3 +6,4 @@ finish
 left
 right
 jump
+sashimi

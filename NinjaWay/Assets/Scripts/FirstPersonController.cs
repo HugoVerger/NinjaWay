@@ -12,7 +12,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
     {
 		public String jumpCommand = "";
 		public String moveCommand = "";
-		private float previousInput = 0f;
+        public GameObject startText;
+        public GameObject deathText;
+        private bool gameStarted = false;
+        public bool isDead = false;
 
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
@@ -49,6 +52,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            startText.SetActive(true);
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -65,7 +69,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            //RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -74,6 +77,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				} else {
 					m_Jump = CrossPlatformInputManager.GetButtonDown ("Jump");
 				}
+            }
+            if (m_Jump && !gameStarted)
+            {
+                gameStarted = true;
+                startText.SetActive(false);
+            }
+            if (m_Jump && isDead)
+            {
+                m_Jump = false;
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -89,6 +101,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            if (isDead && (Input.GetKeyUp(KeyCode.Return) || moveCommand.Equals("sashimi"))) {
+                gameObject.transform.position = new Vector3(0, 2, 0);
+                deathText.SetActive(false);
+                isDead = false;
+                GameObject.Find("Scripts").GetComponent<InfiniteCorridor>().buildNewLevel();
+            }
         }
 
 
@@ -215,7 +234,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void GetInput(out float speed)
         {
             // Read input
-			float horizontal = previousInput;
+			float horizontal = 0f;
 			if (!moveCommand.Equals ("")) {
 				if (moveCommand.Equals ("left")) {
 					horizontal = -1f;
@@ -225,9 +244,24 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			} else {
 				horizontal = CrossPlatformInputManager.GetAxis ("Horizontal");
 			}
-			previousInput = horizontal;
 			float vertical = 1f;
 
+            if (!gameStarted)
+            {
+                if (horizontal != 0f)
+                {
+                    gameStarted = true;
+                    startText.SetActive(false);
+                } else
+                {
+                    vertical = 0f;
+                }
+            }
+            if (isDead)
+            {
+                horizontal = 0f;
+                vertical = 0f;
+            }
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT
@@ -254,27 +288,5 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-
-        private void RotateView()
-        {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
-        }
-
-
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            Rigidbody body = hit.collider.attachedRigidbody;
-            //dont move the rigidbody if the character is on top of it
-            if (m_CollisionFlags == CollisionFlags.Below)
-            {
-                return;
-            }
-
-            if (body == null || body.isKinematic)
-            {
-                return;
-            }
-            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
-        }
     }
 }
