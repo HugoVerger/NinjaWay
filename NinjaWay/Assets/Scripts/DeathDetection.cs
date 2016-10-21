@@ -14,7 +14,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (hit.gameObject.tag.Equals("KillZone") && !fpc.isDead)
             {
                 deathText.SetActive(true);
-                fpc.jumpCommand = "stop";
+                fpc.jumpCommand = "";
                 fpc.moveCommand = "";
                 fpc.isDead = true;
 				PlayerPrefs.SetInt("highestScore", (int)transform.position.x);

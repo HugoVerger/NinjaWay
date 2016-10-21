@@ -1,7 +1,7 @@
 #E finish
 #I 127.0.0.1
 #P 26000
-#V 75
+#V 40
 finish
 left
 right
