@@ -129,7 +129,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             RaycastHit hitInfo;
             Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
                                m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+            //desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal);
 
             m_MoveDir.x = desiredMove.x*speed;
             m_MoveDir.z = desiredMove.z*speed;
@@ -273,10 +274,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
-            if (m_Input.sqrMagnitude > 1)
+            /*if (m_Input.sqrMagnitude > 1)
             {
                 m_Input.Normalize();
-            }
+            }*/
 
             // handle speed change to give an fov kick
             // only if the player is going to a run, is running and the fovkick is to be used

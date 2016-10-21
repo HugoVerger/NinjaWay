@@ -11,9 +11,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		private AudioSource audioSource;
 
         void OnControllerColliderHit(ControllerColliderHit hit) {
-            if (hit.gameObject.tag.Equals("KillZone"))
+            if (hit.gameObject.tag.Equals("KillZone") && !fpc.isDead)
             {
                 deathText.SetActive(true);
+                fpc.jumpCommand = "stop";
                 fpc.moveCommand = "";
                 fpc.isDead = true;
 				PlayerPrefs.SetInt("highestScore", (int)transform.position.x);
